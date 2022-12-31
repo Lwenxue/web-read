@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIY点茶</title>
+</head>
+<style>
+	 #mc{
+		 position: absolute;
+		 top: 62px;
+		 right: 324px;
+		 width: 40px;
+		 height: 100px;
+		 border: 3px solid slategray;
+		 
+	 }
+	 .share img{
+		 position: absolute;
+		 top: -100px;
+		 right: -150px;
+		 width: 400px;
+		 height: 400px;
+	 }
+	 @media screen and (max-width: 640px){
+		 #mc{
+		 		 position: absolute;
+		 		 top: 50px;
+		 		 right: -200px;
+		 		 width: 40px;
+		 		 height: 100px;
+		 		 border: 3px solid slategray;
+		 		 
+		 } 
+		 .share img{
+		 		 position: absolute;
+		 		 top: -150px;
+		 		 right: -550px;
+		 		 width: 500px;
+		 		 height: 500px;
+		 }
+	  }
+</style>
+<body>
+	
+    <center>
+		
+        <canvas id="canvas" width="500" height="500" border-radius="500">你的浏览器居然不支持Canvas？</canvas>
+        <section id="mc">
+            <div id="div1" style="height: 20px;width: 20px;background: #005500;float: left;"></div>
+            <div id="div2" style="height: 20px;width: 20px;background: #874300;float: left;"></div>
+            <div id="div3" style="height: 20px;width: 20px;background: #ffffff;float: left;"></div>
+            <div id="div4" style="height: 20px;width: 20px;background: #52551d;float: left;"></div>
+            <div id="div5" style="height: 20px;width: 20px;background: #000000;float: left;"></div>
+        </section>
+    </center>
+	
+
+    <script>
+        var canvas = document.getElementById("canvas")
+        canvas.style.border = "4px solid #7a3d00";
+		canvas.style.borderRadius="500px";
+		canvas.style.backgroundColor = "#65cb00";
+        var context = canvas.getContext("2d");
+
+        // 给div设置监听事件
+        var div = document.getElementsByTagName('div');
+        for (var i = 1; i < div.length; i++) {
+            var item = document.getElementById("div" + i);
+            item.addEventListener("click", ChangeColor,false)
+        }
+
+        // 改变画笔颜色事件
+        function ChangeColor(){
+            console.log(this.style.background)
+            context.strokeStyle = this.style.background
+        }
+
+        //当手指按下触发ontouchstart事件时，定义一个函数获取鼠标起始坐标 
+        canvas.ontouchstart = function (e) {
+            var x = e.clientX - canvas.getBoundingClientRect().left;
+            var y = e.clientY - canvas.getBoundingClientRect().top;
+            context.beginPath(); // 开始规划路线
+            context.moveTo(x, y) // 移动起始点
+
+            // 当手指移动触发ontouchmove事件时，定义一个函数获取绘制线条的坐标
+            canvas.ontouchmove = function (event) {
+                var x = event.clientX - canvas.getBoundingClientRect().left;
+                var y = event.clientY - canvas.getBoundingClientRect().top;
+                context.lineTo(x, y); // 绘制线条
+                context.stroke() // 绘制描边
+            };
+
+            // 当手指松开时，ontouchend 函数返回null
+            canvas.ontouchend = function (event) {
+                canvas.onmousemove = null;
+            }
+        }
+
+    </script>
+	<div class="share">
+		<a title="截图分享"><img src="img/wei.png"/></a>
+	</div>
+</body>
+
+</html>
